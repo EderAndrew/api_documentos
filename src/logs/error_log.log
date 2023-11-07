@@ -1,0 +1,28 @@
+{
+  message: 'Ocorreu um erro ao fazer o upload do arquivo. - PrismaClientValidationError: \n' +
+    'Invalid `prisma.systemLog.create()` invocation in\n' +
+    'C:\\Users\\andre\\OneDrive\\Documentos\\projetos\\MONTREAL\\solicitacao-documentos-api\\src\\services\\serviceLog\\index.ts:8:44\n' +
+    '\n' +
+    '  5 //This function creates a new system log.\n' +
+    '  6 createdLog: async(data: SystemLog) => {\n' +
+    '  7     // Create a new system log with the provided data\n' +
+    '→ 8     const log = await prisma.systemLog.create({\n' +
+    '          data: {\n' +
+    '            level: "info",\n' +
+    '            operator_register: undefined,\n' +
+    '            ip: "177.52.214.50",\n' +
+    '            message: "Operador fez o upload do arquivo kaliLinux.pdf",\n' +
+    '            created_at: new Date("2023-11-03T18:34:19.977Z"),\n' +
+    '        +   operator: String\n' +
+    '          }\n' +
+    '        })\n' +
+    '\n' +
+    'Argument `operator` is missing.',
+  level: 'error',
+  timestamp: '2023-11-03 15:34:19'
+}
+{
+  message: 'Ocorreu algum erro com o banco de dados.',
+  level: 'error',
+  timestamp: '2023-11-06 16:49:09'
+}

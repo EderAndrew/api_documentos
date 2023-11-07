@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      =  env("DATABASE_URL")
+}
+
+model User{
+    id Int @id @default(autoincrement())
+    avatar String?
+    name String
+    register String @unique
+    password String
+    op String
+    bank_op String
+
+    @@map("users")
+}
+
+model Solicitation{
+    id Int @id @default(autoincrement())
+    request_number String @unique
+    bank_proposal String
+    document_name String
+    sub_document String?
+    state_id String
+    state String
+    city String
+    uf String
+    property_registration_office String?
+    register_number String?
+    civil_register_office String?
+    applicant_name_one String?
+    applicant_name_two String?
+    applicant_cpf_on String?
+    applicant_cpf_two String?
+    birth_date String?
+    wedding_date String?
+    death_date String?
+    municipal_registration_property String?
+    request_status String
+    request_date String
+    request_hour String
+    requestor_name String
+    requestor_register String
+    bank_op String
+    forecast_date String
+    forecast_weeK_day String
+    operator_name String?
+    operator_register String?
+    operator_op String?
+    image String?
+    image_name String?
+    image_type String?
+    image_size Int?
+    start_process_date String?
+    start_process_hour String?
+    finish_process_date String?
+    finish_process_hour String?
+    inconsistencies Inconsistency[]
+
+    @@map("solicitations")
+}
+
+model Inconsistency{
+    id Int @id @default(autoincrement())
+    operator_name String
+    operator_register String
+    requestor_name String
+    requestor_register String
+    bank_op String
+    information_date String
+    correction_date String?
+    description String?
+    status String
+    request Solicitation @relation(fields: [solicitationId], references: [id])
+    solicitationId Int
+
+    @@map("inconsistencies")
+}
+
+model NotaryOffices{
+    id Int @id @default(autoincrement())
+    cns String
+    type String
+    name String
+    city String
+    uf String
+
+    @@map("notaryOffices")
+}
+
+model SystemLog{
+    id Int @id @default(autoincrement())
+    level String
+    operator String
+    operator_register String
+    ip String
+    message String
+    created_at DateTime
+
+    @@map("systemLogs")
+}

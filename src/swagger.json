@@ -1,0 +1,780 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Api de solicitação de documentos",
+        "version": "1.0.0",
+        "description": "Essa Api tem como objetivo realizar um solicitação de documentos.",
+        "contact": {
+            "email":"eder.silva@montreal.com.br"
+        }
+    },
+    "servers":[
+        {
+            "url": "http://localhost:4000/api/v1",
+            "description": "Local"
+        }
+    ],
+    "paths":{
+        "/users/login": {
+            "post":{
+                "summary":"Login de usuário",
+                "description": "Rota responsavel por autenticar um usuário",
+                "tags":["Usuários"],
+                "operationId":"login",
+                "produces":["application/json"],
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "examples":{
+                                "login":{
+                                    "value":{
+                                        "register":"1237457",
+                                        "password":"123"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "401":{
+                        "description": "Unauthorized"
+                    },
+                    "200":{
+                        "description": "OK",
+                        "headers":{
+                            "X-Expires-After":{
+                                "type":"string",
+                                "format":"date-time",
+                                "description":"Date in UTC when token expires"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users":{
+            "get":{
+                "summary":"Listar todos os usuários",
+                "description": "Rota responsavel por retornar uma lista de usuários",
+                "tags":["Usuários"],
+                "security":[{"bearerAuth":[]}],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post":{
+                "summary":"Criar um novo usuário",
+                "description": "Rota responsavel por criar um novo usuário",
+                "tags":["Usuários"],
+                "security":[{"bearerAuth":[]}],
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "$ref":"#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}":{
+            "get":{
+                "summary":"Listar um usuário",
+                "description": "Rota responsavel por retornar um usuário",
+                "tags":["Usuários"],
+                "security":[{"bearerAuth":[]}],
+                "parameters":[
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "description":"Id do usuário",
+                        "required":true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/users/logout":{
+            "post":{
+                "summary":"Logout de usuário",
+                "description": "Rota responsavel por deslogar um usuário",
+                "tags":["Usuários"],
+                "security":[{"bearerAuth":[]}],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/solicitations": {
+            "post":{
+                "summary":"Criar uma nova solicitação",
+                "description": "Rota responsavel por criar uma nova solicitação",
+                "tags":["Solicitações"],
+                "security":[{"bearerAuth":[]}],
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "$ref":"#/components/schemas/Solicitation"
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Solicitation"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get":{
+                "summary":"Listagem de solicitações",
+                "description": "Rota responsavel por retornar todas as solicitações",
+                "tags":["Solicitações"],
+                "security":[{"bearerAuth":[]}],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"array",
+                                    "items":{
+                                        "$ref":"#/components/schemas/Solicitation"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        },
+        "/solicitations/{id}":{
+            "get":{
+                "summary":"Listar uma solicitação",
+                "description": "Rota responsavel por retornar uma solicitação",
+                "tags":["Solicitações"],
+                "security":[{"bearerAuth":[]}],
+                "parameters":[
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "description":"Id da solicitação",
+                        "required":true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Solicitation"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put":{
+                "summary":"Atualizar uma solicitação pelo id",
+                "description": "Rota responsavel por atualizar uma solicitação por id",
+                "tags":["Solicitações"],
+                "security":[{"bearerAuth":[]}],
+                "parameters":[
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "description":"Id da solicitação",
+                        "required":true
+                    }
+                ],
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "$ref":"#/components/schemas/Solicitation"
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "$ref":"#/components/schemas/Solicitation"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/solicitations/filterByDates":{
+            "get":{
+                "summary":"Filtrar Solicitações por data",
+                "description": "Rota responsavel por retornar uma lista de solicitações filtradas por data",
+                "tags":["Solicitações"],
+                "security":[{"bearerAuth":[]}],
+                "parameters":[
+                    {
+                        "in":"query",
+                        "name":"initial_date",
+                        "required":true
+
+                    },
+                    {
+                        "in":"query",
+                        "name":"final_date",
+                        "required":true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Solicitation"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/inconsistencies/{idSolicitation}":{
+            "get":{
+                "summary":"Listar inconsistências por uma solicitação espeficica",
+                "description": "Rota responsavel por retornar uma lista de inconsistências",
+                "tags":["Inconsistências"],
+                "security":[{"bearerAuth":[]}],
+                "parameters":[
+                    {
+                        "name":"idSolicitation",
+                        "in":"path",
+                        "description":"Id da solicitação",
+                        "required":true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Inconsistence"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/inconsistencies":{
+            "post":{
+               "summary":"Criar uma nova inconsistência",
+               "description": "Rota responsavel por criar uma nova inconsistência",
+               "tags":["Inconsistências"],
+               "security":[{"bearerAuth":[]}],
+               "requestBody":{
+                  "content":{
+                     "application/json":{
+                        "schema":{
+                           "$ref":"#/components/schemas/Inconsistence"
+                        }
+                     }
+                  }
+               },
+               "responses":{
+                  "200":{
+                     "description": "OK",
+                     "content":{
+                        "application/json":{
+                           "schema":{
+                              "$ref":"#/components/schemas/Inconsistence"
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+        },
+        "/inconsistencies/{id}":{
+            "put":{
+                "summary":"Atualizar uma inconsistência",
+                "description": "Rota responsavel por atualizar uma inconsistência",
+                "tags":["Inconsistências"],
+                "security":[{"bearerAuth":[]}],
+                "parameters":[
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "description":"Id da inconsistência",
+                        "required":true
+                    }
+                ],
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "$ref":"#/components/schemas/Inconsistence"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/offices":{
+            "get":{
+                "summary":"Listar todas os Cartórios",
+                "description": "Rota responsavel por retornar uma lista de Cartórios",
+                "tags":["Cartórios"],
+                "security":[{"bearerAuth":[]}],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Office"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/offices/{id}":{
+            "get":{
+                "summary":"Listar um Cartório",
+                "description": "Rota responsavel por retornar um Cartório",
+                "tags":["Cartórios"],
+                "security":[{"bearerAuth":[]}],
+                "parameters":[
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "description":"Id do Cartório",
+                        "required":true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Office"
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/offices/city/{city}":{
+            "get":{
+                "summary":"Listar Cartórios por Cidade",
+                "description": "Rota responsavel por retornar uma lista de Cartórios",
+                "tags":["Cartórios"],
+                "security":[{"bearerAuth":[]}],
+                "parameters":[
+                    {
+                        "name":"city",
+                        "in":"path",
+                        "description":"Cidade",
+                        "required":true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Office"
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/uploadFile":{
+            "post":{
+                "summary":"Upload de arquivos",
+                "description": "Rota responsavel por realizar um upload de arquivos",
+                "tags":["Documentos"],
+                "security":[{"bearerAuth":[]}],
+                "requestBody":{
+                    "content":{
+                        "multipart/form-data":{
+                            "schema":{
+                                "type":"object",
+                                "properties":{
+                                    "file":{
+                                        "type":"string",
+                                        "format":"base64",
+                                        "example":""
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/downloadFile/{id}":{
+            "get":{
+                "summary":"Download de arquivos",
+                "description": "Rota responsavel por realizar o download de arquivos",
+                "tags":["Documentos"],
+                "security":[{"bearerAuth":[]}],
+                "parameters":[
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "description":"Id do documento",
+                        "required":true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"string",
+                                    "format":"base64"
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Not Found"
+                    }
+                }
+
+            }
+        }
+    },
+    "components":{
+        "schemas":{
+            "User":{
+                "type":"object",
+                "properties":{
+                    "id":{
+                        "type":"integer"
+                    },
+                    "name":{
+                        "type":"string"
+                    },
+                    "register":{
+                        "type":"string"
+                    },
+                    "password":{
+                        "type":"string"
+                    },
+                    "op":{
+                        "type":"string"
+                    },
+                    "bank_op":{
+                        "type":"string"
+                    }
+                }
+            },
+            "Inconsistence":{
+                "type":"object",
+                "properties":{
+                    "operator_name":{
+                        "type":"string",
+                        "example":"Admin Master"
+                    },
+                    "operator_register":{
+                        "type":"string",
+                        "example":"89007063"
+                    },
+                    "requestor_name":{
+                        "type":"string",
+                        "example":"Admin Master"
+                    },
+                    "requestor_register":{
+                        "type":"string",
+                        "example":"89007063"
+                    },
+                    "bank_op":{
+                        "type":"string",
+                        "example":"00"
+                    },
+                    "information_date":{
+                        "type":"string",
+                        "example":"23/11/2023"
+                    },
+                    "correction_date":{
+                        "type":"string",
+                        "example":"24/11/2023"
+                    },
+                    "description":{
+                        "type":"string",
+                        "example":"Numero não identificado."
+                    },
+                    "status":{
+                        "type":"string",
+                        "example":"corrigido"
+                    },
+                    "solicitationId":{
+                        "type":"string",
+                        "example":"14"
+                    }
+                }
+            },
+            "Office":{
+                "type":"object",
+                "properties":{
+                    "cns":{
+                        "type":"integer"
+                    },
+                    "type":{
+                        "type":"string"
+                    },
+                    "name":{
+                        "type":"string"
+                    },
+                    "city":{
+                        "type":"string"
+                    },
+                    "uf":{
+                        "type":"string"
+                    }
+                }
+            },
+            "Solicitation":{
+                "type":"object",
+                "properties":{
+                    "request_number":{
+                        "type":"string",
+                        "example":"2023185221"
+                    },
+                    "bank_proposal":{
+                        "type":"string",
+                        "example":"18746952"
+                    },
+                    "document_name":{
+                        "type":"string",
+                        "example":"Matricula"
+                    },
+                    "sub_document":{
+                        "type":"string",
+                        "example":""
+                    },
+                    "state_id":{
+                        "type":"string",
+                        "example":"27"
+                    },
+                    "state":{
+                        "type":"string",
+                        "example":"Alagoas"
+                    },
+                    "city":{
+                        "type":"string",
+                        "example":"Jaramataia"
+                    },
+                    "uf":{
+                        "type":"string",
+                        "example":"AL"
+                    },
+                    "property_registration_office":{
+                        "type":"string",
+                        "example":"Cartório do Registro Civil das Pessoas Naturais de Jaramataia - AL"
+                    },
+                    "civil_register_office":{
+                        "type":"string",
+                        "example":"12385210"
+                    },
+                    "register_number":{
+                        "type":"string",
+                        "example":""
+                    },
+                    "applicant_name_one":{
+                        "type":"string",
+                        "example":""
+                    },
+                    "applicant_name_two":{
+                        "type":"string",
+                        "example":""
+                    },
+                    "applicant_cpf_on":{
+                        "type":"string",
+                        "example":""
+                    },
+                    "applicant_cpf_two":{
+                        "type":"string",
+                        "example":""
+                    },
+                    "birth_date":{
+                        "type":"string",
+                        "example":""
+                    },
+                    "weddings_date":{
+                        "type":"string",
+                        "example":""
+                    },
+                    "death_date":{
+                        "type":"string",
+                        "example":""
+                    },
+                    "municipal_registration_property":{
+                        "type":"string",
+                        "example":""
+                    },
+                    "request_status":{
+                        "type":"string",
+                        "example":"finalizado"
+                    },
+                    "request_date":{
+                        "type":"string",
+                        "example":"03/11/2023"
+                    },
+                    "request_hour":{
+                        "type":"string",
+                        "example":"15:30:50"
+                    },
+                    "requestor_name":{
+                        "type":"string",
+                        "example":"Admin Master"
+                    },
+                    "requestor_register":{
+                        "type":"string",
+                        "example":"89007063"
+                    },
+                    "bank_op":{
+                        "type":"string",
+                        "example":"00"
+                    },
+                    "forecast_date":{
+                        "type":"string",
+                        "example":"08/11/2023"
+                    },
+                    "forecast_weeK_day":{
+                        "type":"string",
+                        "example":"Quarta-feira"
+                    },
+                    "operator_name":{
+                        "type":"string",
+                        "example":"Admin Master"
+                    },
+                    "operator_register":{
+                        "type":"string",
+                        "example":"89007063"
+                    },
+                    "operator_op":{
+                        "type":"string",
+                        "example":"00"
+                    },
+                    "image":{
+                        "type":"string",
+                        "example":""
+                    },
+                    "image_name":{
+                        "type":"string",
+                        "example":""
+                    },
+                    "image_type":{
+                        "type":"string",
+                        "example":""
+                    },
+                    "image_size":{
+                        "type":"integer",
+                        "example": 0
+                    },
+                    "start_process_date":{
+                        "type":"string",
+                        "example":"03/11/2023"
+                    },
+                    "start_process_hour":{
+                        "type":"string",
+                        "example":"15:30:22"
+                    },
+                    "finish_process_date":{
+                        "type":"string",
+                        "example":"03/11/2023"
+                    },
+                    "finish_process_hour":{
+                        "type":"string",
+                        "example":"15:33:48"
+                    }
+                }
+            }
+        },
+        "securitySchemes":{
+            "bearerAuth":{
+                "type":"http",
+                "scheme":"bearer",
+                "bearerFormat":"JWT"
+            }
+        }
+    }
+}
